@@ -55,7 +55,7 @@ const FileComponent: React.FC<FileProps> = ({ userFile }) => {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <p>Unsupported file type.</p>
+          <p>Detecting....</p>
         )
       ) : (
         <p>Loading...</p>

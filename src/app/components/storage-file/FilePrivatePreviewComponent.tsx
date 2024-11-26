@@ -17,22 +17,6 @@ const FilePrivatePreviewComponent: React.FC<FileProps> = ({ fileName }) => {
   useEffect(() => {
     const getFile = async () => {
       try {
-        // const response = await filePrivatePreview(fileName);
-
-        // // Create a URL for the file blob
-        // const fileBlobUrl = URL.createObjectURL(response.data);
-        // setFileUrl(fileBlobUrl);
-
-        // // Detect the file type from Blob MIME type
-        // const mimeType = response.data.type; // e.g., "image/png", "video/mp4"
-        // if (mimeType.startsWith("image/")) {
-        //   setFileType("image");
-        // } else if (mimeType.startsWith("video/")) {
-        //   setFileType("video");
-        // } else {
-        //   setFileType(null); // Unsupported file type
-        // }
-
         const { data } = await filePrivatePreview(fileName);
         const fileSignedUrl = data?.data?.signedUrl;
         setFileUrl(fileSignedUrl);
@@ -52,13 +36,6 @@ const FilePrivatePreviewComponent: React.FC<FileProps> = ({ fileName }) => {
     };
 
     getFile();
-
-    // Clean up the object URL when the component unmounts
-    return () => {
-      if (fileUrl) {
-        URL.revokeObjectURL(fileUrl);
-      }
-    };
   }, [fileName, fileUrl]);
 
   return (
@@ -73,7 +50,7 @@ const FilePrivatePreviewComponent: React.FC<FileProps> = ({ fileName }) => {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <p>Unsupported file type.</p>
+          <p>Detecting....</p>
         )
       ) : (
         <p>Loading...</p>
