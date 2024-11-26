@@ -17,12 +17,14 @@ import SubmitButton from "../common/form/SubmitButton";
 import { login } from "@/app/api/services/auth";
 import FormCustomError from "../common/form/FormCustomError";
 import { setUserSession } from "@/app/api/local-storage";
-import { FE_BASE } from "@/app/api/api-urls";
+import { useRouter } from "next/navigation";
 
 const Signin = () => {
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [revealed, setRevealed] = useState<boolean>(false);
   const [customServerError, setCustomServerError] = useState<string>("");
+
+  const router = useRouter();
 
   const reactHookFormMethods = useForm<SignInFormFields>({
     resolver: yupResolver(signInSchema),
@@ -56,7 +58,8 @@ const Signin = () => {
       if (signIn?.status === 201) {
         reset();
         setUserSession(signIn?.data?.data);
-        window.location.href = `${FE_BASE}/` as string;
+        // window.location.href = `${FE_BASE}/` as string;
+        router.push("/");
       }
     } catch (error: any) {
       console.log("Login error", error);
