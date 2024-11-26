@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { filePrivatePreview } from "@/app/api/services/storage-files";
+import {
+  filePrivatePreview,
+  getFileContentType,
+} from "@/app/api/services/storage-files";
 
 type FileProps = {
   fileName: string;
@@ -14,20 +17,34 @@ const FilePrivatePreviewComponent: React.FC<FileProps> = ({ fileName }) => {
   useEffect(() => {
     const getFile = async () => {
       try {
-        const response = await filePrivatePreview(fileName);
+        // const response = await filePrivatePreview(fileName);
 
-        // Create a URL for the file blob
-        const fileBlobUrl = URL.createObjectURL(response.data);
-        setFileUrl(fileBlobUrl);
+        // // Create a URL for the file blob
+        // const fileBlobUrl = URL.createObjectURL(response.data);
+        // setFileUrl(fileBlobUrl);
 
-        // Detect the file type from Blob MIME type
-        const mimeType = response.data.type; // e.g., "image/png", "video/mp4"
-        if (mimeType.startsWith("image/")) {
+        // // Detect the file type from Blob MIME type
+        // const mimeType = response.data.type; // e.g., "image/png", "video/mp4"
+        // if (mimeType.startsWith("image/")) {
+        //   setFileType("image");
+        // } else if (mimeType.startsWith("video/")) {
+        //   setFileType("video");
+        // } else {
+        //   setFileType(null); // Unsupported file type
+        // }
+
+        const { data } = await filePrivatePreview(fileName);
+        const fileSignedUrl = data?.data?.signedUrl;
+        setFileUrl(fileSignedUrl);
+        const response = await getFileContentType(fileSignedUrl);
+        const contentType = response.headers["content-type"];
+
+        if (contentType?.startsWith("image/")) {
           setFileType("image");
-        } else if (mimeType.startsWith("video/")) {
+        } else if (contentType?.startsWith("video/")) {
           setFileType("video");
         } else {
-          setFileType(null); // Unsupported file type
+          setFileType(null); //
         }
       } catch (error) {
         console.error("Error fetching file", error);

@@ -48,12 +48,20 @@ export const getUserFilesByFilter = async (query: string) => {
 
 export const downloadPrivateFile = async (fileName: string) => {
   return axiosPrivate.get(`/storage-files/download/${fileName}`, {
-    responseType: "blob",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
 
 export const getPrivateFile = async (fileUrl: string) => {
   return axiosPrivate.get(`${fileUrl}`, {
-    responseType: "blob",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
+};
+
+export const getFileContentType = async (fileUrl: string) => {
+  return axiosPublic.head(fileUrl);
 };

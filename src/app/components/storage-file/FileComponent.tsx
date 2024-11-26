@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   downloadPrivateFile,
+  getFileContentType,
   getPrivateFile,
 } from "@/app/api/services/storage-files";
 import { UserFile } from "@/app/types/user/user-files";
@@ -10,32 +11,24 @@ type FileProps = {
 };
 
 const FileComponent: React.FC<FileProps> = ({ userFile }) => {
-  const [fileUrl, setFileUrl] = React.useState<string | null>(null);
-  const [fileType, setFileType] = React.useState<string | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [fileType, setFileType] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getFile = async () => {
       try {
-        const response = await downloadPrivateFile(userFile.file_name);
-        // Create a URL for the file blob
-        const fileBlobUrl = URL.createObjectURL(response.data);
-        setFileUrl(fileBlobUrl);
+        const { data } = await downloadPrivateFile(userFile.file_name);
+        const fileSignedUrl = data?.data?.signedUrl;
+        setFileUrl(fileSignedUrl);
+        const response = await getFileContentType(fileSignedUrl);
+        const contentType = response.headers["content-type"];
 
-        const imagePath = userFile.file_url;
-
-        // Get the file extension
-        const extension = imagePath.split(".").pop()?.toLowerCase();
-        // Define the accepted extensions directly
-        const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
-        const videoExtensions = [".mp4", ".webm", ".avi"];
-
-        // Check if it's an image or video based on the extension
-        if (imageExtensions.includes(`.${extension}`)) {
+        if (contentType?.startsWith("image/")) {
           setFileType("image");
-        } else if (videoExtensions.includes(`.${extension}`)) {
+        } else if (contentType?.startsWith("video/")) {
           setFileType("video");
         } else {
-          setFileType(null); // Unsupported file type
+          setFileType(null); //
         }
       } catch (error) {
         console.error("Error fetching file", error);
