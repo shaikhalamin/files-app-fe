@@ -42,7 +42,7 @@ const FilePrivatePreviewComponent: React.FC<FileProps> = ({ fileName }) => {
         URL.revokeObjectURL(fileUrl);
       }
     };
-  }, [fileName]);
+  }, [fileName, fileUrl]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>

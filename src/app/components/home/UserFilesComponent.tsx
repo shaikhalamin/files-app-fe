@@ -43,7 +43,7 @@ const UserFilesComponent: React.FC<UserFilesProps> = ({
   const [customFilter, setCustomFilter] =
     useState<FilterType>(FilterTypeInitialVal);
 
-  const fetchFiles = () => {
+  const fetchFiles = useCallback(() => {
     setLoading(true);
     getUserFiles()
       .then((res) => {
@@ -57,17 +57,17 @@ const UserFilesComponent: React.FC<UserFilesProps> = ({
         console.error("data fetch error", err);
         resetRefetch(); // Ensure reset is called even if fetch fails
       });
-  };
+  }, [resetRefetch]);
 
   useEffect(() => {
     fetchFiles();
-  }, []); // Initial load
+  }, [fetchFiles]); // Initial load
 
   useEffect(() => {
     if (shouldRefetch) {
       fetchFiles(); // Trigger refetch
     }
-  }, [shouldRefetch]);
+  }, [fetchFiles, shouldRefetch]);
 
   useEffect(() => {
     if (filterClient) {

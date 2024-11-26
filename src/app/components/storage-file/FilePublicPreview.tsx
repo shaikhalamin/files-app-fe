@@ -42,7 +42,7 @@ const FilePublicPreviewComponent: React.FC<FileProps> = ({ token }) => {
         URL.revokeObjectURL(fileUrl);
       }
     };
-  }, [token]);
+  }, [fileUrl, token]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
