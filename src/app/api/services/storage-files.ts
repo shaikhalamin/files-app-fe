@@ -20,13 +20,17 @@ export const generateShareableLink = async (fileName: string) => {
 
 export const filePrivatePreview = async (fileName: string) => {
   return axiosPrivate.get(`/storage-files/private/preview/${fileName}`, {
-    responseType: "blob",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
 
 export const filePublicPreview = async (token: string) => {
   return axiosPublic.get(`/storage-files/public/preview/${token}`, {
-    responseType: "blob",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
 
