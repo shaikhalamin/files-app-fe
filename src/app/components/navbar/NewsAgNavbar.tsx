@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import styles from "./navbar.module.css";
 import HamBurgerIcon from "./HamBurgerIcon";
-import { useEffect, useState } from "react";;
+import { useEffect, useState } from "react";
 import { getLocalSession } from "@/app/api/local-storage";
 import ProfileNavItems from "./ProfileNavItems";
 
@@ -13,17 +13,14 @@ const NewsAgNavbar = () => {
   const [buttonRef, setButtonRef] = useState<number | string>("");
   //const session = getLocalSession();
 
-
   const [session, setSession] = useState();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const value = getLocalSession();
       setSession(value);
     }
   }, []);
-
-
 
   return (
     <Navbar

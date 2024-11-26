@@ -58,7 +58,6 @@ const Signin = () => {
       if (signIn?.status === 201) {
         reset();
         setUserSession(signIn?.data?.data);
-        // window.location.href = `${FE_BASE}/` as string;
         router.push("/");
       }
     } catch (error: any) {

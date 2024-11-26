@@ -1,14 +1,14 @@
 import React from "react";
 import { Nav, Dropdown } from "react-bootstrap";
-import { MdDashboard, MdLogout } from "react-icons/md";
-import { FaUserCog } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 import { getLocalSession, removeLocalSession } from "@/app/api/local-storage";
 import { User } from "@/app/types/user/User";
 import { authLogOut } from "@/app/api/services/auth";
-import { FE_BASE } from "@/app/api/api-urls";
+import { useRouter } from "next/navigation";
 
 const ProfileNavItems = () => {
   const session = getLocalSession();
+  const router = useRouter();
   const user = session ? (session.user as User) : null;
 
   if (!session) {
@@ -16,10 +16,10 @@ const ProfileNavItems = () => {
   }
 
   const logOut = () => {
-    authLogOut().then(()=>{
-      removeLocalSession()
-      window.location.href = `${FE_BASE}/auth/signin` as string;
-    })
+    authLogOut().then(() => {
+      removeLocalSession();
+      router.push("/");
+    });
   };
 
   return (
@@ -30,7 +30,9 @@ const ProfileNavItems = () => {
           id="dropdown-basic"
           className="text-white"
         >
-          <span className="ft-15 fw-normal">{user?.first_name} {user?.last_name}</span>
+          <span className="ft-15 fw-normal">
+            {user?.first_name} {user?.last_name}
+          </span>
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => logOut()}>
