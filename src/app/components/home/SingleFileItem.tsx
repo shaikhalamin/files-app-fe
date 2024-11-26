@@ -27,10 +27,11 @@ const SingleFileItem: React.FC<SingleFileType> = ({ userFile }) => {
       alert("Please generate link first !");
       return;
     }
+    setCopyLinkText("Copying..");
     await navigator.clipboard.writeText(fileShareableLink);
     setCopyLinkText("Copied!");
     setTimeout(() => {
-      setCopyLinkText("Copy Link");
+      setCopyLinkText("Copy");
     }, 1500);
   };
 
