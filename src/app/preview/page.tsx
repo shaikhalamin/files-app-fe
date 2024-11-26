@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import PrivateLayout from "../components/layouts/PrivateLayout";
 import PrivatePreviewComponent from "../components/preview/PrivatePreviewComponent";
+import { Suspense } from "react";
 
 const PrivatePreviewPage = () => {
   return (
@@ -9,7 +10,9 @@ const PrivatePreviewPage = () => {
       <Container>
         <Row>
           <Col>
-            <PrivatePreviewComponent />
+            <Suspense fallback={<div>Loading...</div>}>
+              <PrivatePreviewComponent />
+            </Suspense>
           </Col>
         </Row>
       </Container>
